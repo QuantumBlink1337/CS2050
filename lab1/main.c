@@ -1,17 +1,34 @@
-#include "lab0.h"
+#include "lab1.h"
 
 int main() {
-    srand(time(0));
-    int arraySize = 10, query = 5;
-    int data[arraySize];
+	FILE *file = fopen("numbers.txt", "r");
 
-    printf("The array to search:\n[");
-    for(int i = 0; i < arraySize; ++i) {
-        data[i] = (rand() % 10) + 1;
-        printf("%d%s", data[i], (((i + 1) == arraySize) ? "]\n\n" : ", "));
-    }
+	if(!file) {
+		// Unable to open the specified file
+		return EXIT_FAILURE;
+	}
 
-    int result = countOccurrences(arraySize, data, query);
+	int size;
 
-    printf("The number %d occurs in the array %d time%s.\n", query, result, ((result != 1) ? "s" : ""));
+	if(fscanf(file, "%d", &size) != 1) {
+		fclose(file);
+		// Unable to read the array size from the file
+		return EXIT_FAILURE;
+	}
+
+	int array[size];
+
+	for(int i = 0; i < size; ++i) {
+		fscanf(file, "%d", array + i);
+	}
+	float result = 0.0;
+
+	printf("Error code: %d\n", avgEven(array, size, &result));
+	printf("Result: %f\n", result);
+
+    fclose(file);
+
+    // END STARTER CODE
+
+
 }
