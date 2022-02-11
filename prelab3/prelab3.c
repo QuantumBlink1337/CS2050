@@ -18,13 +18,16 @@ int main(void) {
 
 }
 float * readFloatFileIntoArray(FILE *fp, int *length) {
-    
     char buffer[50];
     int size = 0;
     fgets(buffer, 50, fp);
     sscanf(buffer, "%d", &size);
     *length = size;
-    if (size == 0) {
+    if (fp == NULL) {
+        *length = -1;
+        return NULL;
+    }
+    if (size <= 0) {
         return NULL;
     }
     float * floatArray = (float*)malloc(sizeof(float) * size);
