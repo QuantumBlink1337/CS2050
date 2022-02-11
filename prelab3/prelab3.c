@@ -1,53 +1,34 @@
-#include <stdio.h>
-#include <stdlib.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 
+ double * createDoubleArray(const int startingIndex, const int endingIndex, int* error);
+ void freeArray(void ** ptr);
 
-float * readFloatFileIntoArray(FILE *fp, int *length); 
-void freePointer(void * ptr);
-
-int main(void) {
-    FILE *fp = NULL;
-    fp = fopen("float.txt", "r");
-    int length = 0;
-    float * floatArray = readFloatFileIntoArray(fp, &length);
-    for (int i = 0; i < length; i++) {
-        printf("%f\n", floatArray[i]);
-    }
-    fclose(fp);
-    freePointer(floatArray);
-
-}
-float * readFloatFileIntoArray(FILE *fp, int *length) {
-    char buffer[50];
-    int size = 0;
-    fgets(buffer, 50, fp);
-    sscanf(buffer, "%d", &size);
-    *length = size;
-    if (fp == NULL) {
-        *length = -1;
+ int main(void) {
+     int error = 0;
+     double * array = createDoubleArray(1900, 2000, &error);
+     for (int i = 1900; i <= 2000; i++){
+         array[i] = 0+i;
+         printf("%f\n", array[i]);
+     }
+     freeArray((void**)&array);
+ }
+double * createDoubleArray(const int sIndex, const int eIndex, int* error) {
+    int size = eIndex - sIndex;
+    if (size < 0) {
+        *error = 1;
         return NULL;
     }
-    if (size <= 0) {
+    double * array = malloc(sizeof(double) * size);
+    if (array == NULL) {
+        *error = 1;
         return NULL;
     }
-    float * floatArray = (float*)malloc(sizeof(float) * size);
-    if (floatArray == NULL) {
-        *length = -1;
-        return NULL;
-    }
-    int i = 0;
-    for (; i<size || !feof(fp); i++) {
-        float newFloat = 0.0;
-        fgets(buffer, 50, fp);
-        sscanf(buffer, "%f", &newFloat);
-        floatArray[i] = newFloat;
-    }
-    printf("i: %d\n", i);
-    return floatArray;
-}
-void freePointer(void * ptr) {
-    free(ptr);
-    ptr = NULL;
-}
+    array-= sIndex;
+    *error = 0;
+    return array;
 
-
+}
+void freeArray(void ** ptr) {
+    free(*ptr);
+}
