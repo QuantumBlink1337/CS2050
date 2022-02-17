@@ -29,8 +29,9 @@ int main(void) {
     float salary;
     getEmpJobType(array, 00005, &jobType);
     getEmpSalary(array, 00005, &salary);
-
     printf("Employee info | Job: %d | Salary %f\n", jobType, salary);
+    freeArray(array);
+    fclose(fp);
 }
 
 Employee * readEmployeeArray(FILE * fp) {
@@ -50,11 +51,6 @@ Employee * readEmployeeArray(FILE * fp) {
     }
     return array;
 }
-
-
-
-
-
 Employee createEmployee(int empID, int jobType, float salary) {
     Employee temp = {empID, jobType, salary};
     return temp;
