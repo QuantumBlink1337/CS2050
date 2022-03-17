@@ -1,26 +1,24 @@
 #include "prelab7.h"
 
-Node * retriveTail(List list) {
-    Node * tail;
+Node * retrieveTail(List list) {
     Node * head = list.head;
     while (head->next != NULL) {
-        tail = head;
         head = head->next;
+
     }
-    return tail; 
+    return head;
 }
 
 int insertAtHead(void* data, List list) {
     int error = 0;
     Node * newNode = createNode(data, &error);
-    newNode->next = ;
-    list.head.next = newNode;
-    printf("Pointer: %p\n", list.head);
+    newNode->next = list.head->next;
+    list.head->next = newNode;
     return error;
 }
 int insertAtTail(void* data, List list) {
     int error = 0;
-    Node * tail = retriveTail(list);
+    Node * tail = retrieveTail(list);
     tail->next = createNode(data, &error);
     return error; 
 
@@ -48,10 +46,7 @@ void * removeTail(List list) {
 
 
 List initList(int * error) {
-    int * q = malloc(sizeof(int));
-    *q = -1;
-    // I use an integer here solely to prove its a dummy node 
-    List list = {createNode(q, error)};
+    List list = {createNode(NULL, error)};
     return list;
 }
 Node * createNode(void * Object, int * error) {
@@ -68,36 +63,34 @@ Node * createNode(void * Object, int * error) {
 }
 void * getAtIndex(int index, List list) {
     int size = getListLength(list);
-    Node * head = list.head;
+    Node * head = list.head->next;
     for (int i = 0; i < size; i++) {
         if (index == i) {
             return head->Object;
         }
-        printf("triggered\n");
         head = head->next;
     }
     return NULL;
 }
 int getListLength(List list) {
-    Node * head = list.head;
+    Node * head = list.head->next;
     int i = 0;
     while (head->next != NULL) {
-        printf("Test\n");
         i++;
         head = head->next;
     }
     return i;
 }
-void freeList(List list) {
-    Node * tmp;
-    Node * node = list.head;
-    while (node->next != NULL) {
-        tmp = node;
-        node = node->next;
-        free(tmp->Object);
-        free(tmp);
+
+void freeList(List list)
+{
+    Node * currentNode = list.head;
+    for(Node * nextNode; currentNode!=NULL; currentNode = nextNode)
+    {
+        nextNode = currentNode->next;
+        free(currentNode->Object);
+        free(currentNode);
     }
-    free(node);
 }
 
 
