@@ -16,6 +16,18 @@ int main(void) {
         head = head->next;
         
     }
+    for (int i = 0; i < 1; i++) {
+        removeTail(list);
+    }
+    size = getListLength(list);
+    printf("Size: %d", size);
+    head = list.head;
+    printf("\n\n\n\n\n");
+    for (int i = 0; i < size; i++) {
+        printf("Object: %d\n", *(int*)getAtIndex(i, list));
+        head = head->next;
+        
+    }
     freeList(list);
 
 }
