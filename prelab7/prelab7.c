@@ -1,4 +1,5 @@
 #include "prelab7.h"
+#include <assert.h>
 
 Node * retrieveTail(List list) {
     Node * head = list.head;
@@ -24,22 +25,26 @@ int insertAtTail(void* data, List list) {
 
 }
 void * removeHead(List list) {
-    Node * head = list.head;
-    Node * tmp = head;
+    Node * head = list.head->next;
+    assert (head != NULL);
     void * data = head->Object;
-    head = head->next;
-    free(tmp);
+    void * temp = head->next;
+    list.head->next = head->next;
+    free(temp);
     return data;
 }
 void * removeTail(List list) {
     Node * nodeBeforeTail;
-    Node * head = list.head;
+    Node * head = list.head->next;
+    int i = 0;
     while (head->next->next != NULL) {
+        printf("I: %d\n", ++i);
         nodeBeforeTail = head;
         head = head->next;
     }
     void * data = nodeBeforeTail->next->Object;
     free(nodeBeforeTail->next);
+    printf("Freed node at %p\n", nodeBeforeTail->next);
     nodeBeforeTail->next = NULL;
     return data;
 }
@@ -74,7 +79,7 @@ void * getAtIndex(int index, List list) {
 }
 int getListLength(List list) {
     Node * head = list.head->next;
-    int i = 0;
+    int i = 1;
     while (head->next != NULL) {
         i++;
         head = head->next;
