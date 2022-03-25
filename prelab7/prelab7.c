@@ -22,7 +22,6 @@ int insertAtTail(void* data, List list) {
     Node * tail = retrieveTail(list);
     tail->next = createNode(data, &error);
     return error; 
-
 }
 void * removeHead(List list) {
     Node * head = list.head->next;
@@ -36,15 +35,12 @@ void * removeHead(List list) {
 void * removeTail(List list) {
     Node * nodeBeforeTail;
     Node * head = list.head->next;
-    int i = 0;
-    while (head->next->next != NULL) {
-        printf("I: %d\n", ++i);
+    while (head->next != NULL) {
         nodeBeforeTail = head;
         head = head->next;
     }
     void * data = nodeBeforeTail->next->Object;
     free(nodeBeforeTail->next);
-    printf("Freed node at %p\n", nodeBeforeTail->next);
     nodeBeforeTail->next = NULL;
     return data;
 }
