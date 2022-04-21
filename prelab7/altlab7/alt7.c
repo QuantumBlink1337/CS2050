@@ -1,26 +1,34 @@
-#include "prelab7.h"
+#include "alt7.h"
 #include <assert.h>
 
 Node * retrieveTail(List list) {
-    Node * head = list.head;
-    while (head->next != NULL) {
-        head = head->next;
-
-    }
-    return head;
+    
 }
 
 int insertAtHead(void* data, List list) {
     int error = 0;
     Node * newNode = createNode(data, &error);
     newNode->next = list.head->next;
+    if (list.head->next != NULL) {
+        list.head->next->prev = newNode;
+    }
+    if (list.head->Object == NULL) {
+        list.tail->next = newNode;
+        assert(list.tail->next != NULL);
+    }
     list.head->next = newNode;
     return error;
 }
 int insertAtTail(void* data, List list) {
     int error = 0;
-    Node * tail = retrieveTail(list);
-    tail->next = createNode(data, &error);
+    Node * tail = list.tail->next;
+    Node * newNode = createNode(data, &error);
+    if (tail == NULL) {
+        list.tail->next == newNode;
+        return error;
+    }
+    newNode->prev = tail;
+    tail->next = newNode;
     return error; 
 }
 void * removeHead(List list) {
@@ -47,7 +55,8 @@ void * removeTail(List list) {
 
 
 List initList(int * error) {
-    List list = {createNode(NULL, error)};
+    Node * node = createNode(NULL, error);
+    List list = {node, node};
     return list;
 }
 Node * createNode(void * Object, int * error) {
@@ -59,6 +68,7 @@ Node * createNode(void * Object, int * error) {
     }
     pointer->Object = Object;
     pointer->next = NULL;
+    pointer->prev = NULL;
     *error = 0;
     return pointer;
 }

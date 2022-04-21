@@ -16,7 +16,7 @@ int main(void) {
         head = head->next;
         
     }
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 5; i++) {
         removeTail(list);
     }
     size = getListLength(list);

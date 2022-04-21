@@ -1,15 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct node {
-    void * Object;
-    Node * next;
-}Node;
-typedef struct queue {
-    Node * front,  * rear;
-    int size;
-    int error;
-}Queue;
+#include <assert.h>
 
+typedef struct Node {
+    void * Object;
+    struct Node * next;
+}Node;
+typedef struct queueInfo {
+    Node * rear;
+    Node * head;
+    int * size;
+    int * error;
+}QueueInfo;
+
+typedef struct queue {
+    QueueInfo * info;
+}Queue;
 
 
 int getQueueErrorCode(Queue);

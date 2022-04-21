@@ -3,13 +3,13 @@
 
 
 
-
 typedef struct Node {
     void *Object;
     struct Node *next;
+    struct Node *prev;
 } Node;
 typedef struct{ 
-         Node *head; 
+         Node *head; Node *tail;
 } List; 
 int insertAtHead(void*, List); 
 int insertAtTail(void*, List);
