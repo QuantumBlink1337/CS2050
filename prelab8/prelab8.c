@@ -19,7 +19,7 @@ Queue queueInit() {
     int error = 0;
     Node * dummyNode = createNode(NULL, &error);
     queue.error = error;
-    queue.front = queue.rear = dummyNode;
+    queue.rear->next = dummyNode;
     return queue;
 }
 int enqueue(void * Object, Queue queue) {
@@ -29,9 +29,14 @@ int enqueue(void * Object, Queue queue) {
         queue.error = 1;
         return 1;
     }
-    newNode->next = queue.front->next;
-    queue.front->next = newNode;
+    
+    queue.rear->next->next = newNode;
+
+
 }
-void * dequeue(Queue);
+void * dequeue(Queue queue) {
+    
+
+}
 int getQueueSize(Queue);
 void freeQueue(Queue);  
