@@ -30,14 +30,14 @@ int compareID(const void *a, const void *b) {
     Employee * two = (Employee*) b;
     return (one->ID - two->ID);
 }
-EmpDatabase createSearchableEmployeeDB(Employee ** employees, int size) {
-    EmpDatabase database;
+EmpInfo createSearchableEmployeeDB(Employee ** employees, int size) {
+    EmpInfo database;
     database.array = *employees;
     database.size = size;
     database.error = 0;
     return database;
 }
-Employee * findEmpBySSN(int SSN, EmpDatabase database) {
+Employee * findEmpBySSN(int SSN, EmpInfo database) {
     qsort(database.array, database.size, sizeof(Employee), compareSSN);
     printEmployees(database);
     int index = binarySearchEmployee(database.array, 0, database.size, SSN, 1);
@@ -48,7 +48,7 @@ Employee * findEmpBySSN(int SSN, EmpDatabase database) {
     database.error = 0;
     return &database.array[index];
 }
-Employee * findEmpByID(int ID, EmpDatabase database) {
+Employee * findEmpByID(int ID, EmpInfo database) {
     qsort(database.array, database.size, sizeof(Employee), compareID);
     printEmployees(database);
     int index = binarySearchEmployee(database.array, 0, database.size, ID, 0);
@@ -60,7 +60,7 @@ Employee * findEmpByID(int ID, EmpDatabase database) {
     return &database.array[index];
 }
 
-void printEmployees(EmpDatabase database) {
+void printEmployees(EmpInfo database) {
     for (int i = 0; i < database.size; i++) {
         printf("SSD: %d | ID: %d\n", database.array[i].SSN, database.array[i].ID);
     }
@@ -74,9 +74,9 @@ void printEmployee(Employee* employee) {
 }
 
 
-void freeEmpDatabase(EmpDatabase d) {
+void freeEmpDatabase(EmpInfo d) {
     free(d.array);
 }
-int getErrorCode(EmpDatabase d) {
+int getErrorCode(EmpInfo d) {
     return d.error;
 }

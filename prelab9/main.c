@@ -16,7 +16,7 @@ int main(void) {
             ID = employee.ID;
         }
     }
-    EmpDatabase database = createSearchableEmployeeDB(&employees, size);
+    EmpInfo database = createSearchableEmployeeDB(&employees, size);
     printEmployees(database);
     printf("RandomID: %d\nRandomSSN:%d\n", ID, randomSSN);
     printf("\n\n\n");

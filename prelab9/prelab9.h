@@ -5,17 +5,17 @@ typedef struct Employee {
     int ID;
 }Employee;
 
-typedef struct EmpDatabase {
+typedef struct EmpInfo {
     Employee * array;
     int size;
     int error;
-}EmpDatabase;
+}EmpInfo;
 
 
-EmpDatabase createSearchableEmployeeDB(Employee **, int);
-Employee * findEmpBySSN(int, EmpDatabase);
-Employee * findEmpByID(int, EmpDatabase);
-void printEmployees(EmpDatabase);
+EmpInfo createSearchableEmployeeDB(Employee **, int);
+Employee * findEmpBySSN(int, EmpInfo);
+Employee * findEmpByID(int, EmpInfo);
+void printEmployees(EmpInfo);
 void printEmployee(Employee*);
-void freeEmpDatabase(EmpDatabase);
-int getErrorCode(EmpDatabase);
+void freeEmpDatabase(EmpInfo);
+int getErrorCode(EmpInfo);
