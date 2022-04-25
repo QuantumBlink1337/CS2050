@@ -35,6 +35,6 @@ EmpDatabase insertEmployee(Employee *, EmpDatabase);
 Employee * findEmpBySSN(int, EmpDatabase);
 Employee * findEmpByID(int, EmpDatabase);
 void printEmployees(EmpDatabase, int);
-void printEmployee(Employee*);
+void printEmployee(Employee *);
 void freeEmpDatabase(EmpDatabase);
 int getErrorCode(EmpDatabase);

@@ -9,10 +9,12 @@ int main(void) {
     int randomSSN;
     int ID;
     EmpDatabase database = createSearchableEmployeeDB();
+    Employee ** employeeList = malloc(sizeof(Employee*) * size);
     for (int i = 0; i < size; i++) {
         Employee * employee = malloc(sizeof(Employee));
         employee->SSN = rand() % 10000;
         employee->ID = rand() % 30;
+        employeeList[i] = employee;
         insertEmployee(employee, database);
         if (i == size-1) {
             randomSSN = employee->SSN;
@@ -28,4 +30,8 @@ int main(void) {
     printEmployee(findEmpByID(ID, database));
 
     freeEmpDatabase(database);
+    for (int i = 0; i < size; i++) {
+        free(employeeList[i]);
+    }
+    free(employeeList);
 }

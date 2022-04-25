@@ -1,7 +1,6 @@
 //
 // Created by thequ on 4/23/2022.
 //
-#include <assert.h>
 #include "prelab10.h"
 Employee * binarySearchEmployee(BinaryTree * tree, int searchedValue, int isSSN) {
     int value;
@@ -18,21 +17,28 @@ Employee * binarySearchEmployee(BinaryTree * tree, int searchedValue, int isSSN)
     }
     return binarySearchEmployee(tree->right, searchedValue, isSSN);
 }
-void inOrder(BinaryTree * tree, void func(void *)) {
+void inOrder(BinaryTree * tree, void func(void *), int performOnObject) {
     if (tree != NULL) {
-        inOrder(tree->left, func);
-        func(tree->Object);
-        inOrder(tree->right, func);
+        inOrder(tree->left, func, performOnObject);
+        if (performOnObject == 1) {
+            func(tree->Object);
+        }
+        else {
+            func(tree);
+        }
+        inOrder(tree->right, func, performOnObject);
     }
 }
-void freeTree(BinaryTree * tree, int freedObject) {
+void postOrder(BinaryTree * tree, void func(void *), int performOnObject) {
     if (tree != NULL) {
-        freeTree(tree->right, freedObject);
-        if (freedObject == 1) {
-            free(tree->Object);
+        postOrder(tree->right, func, performOnObject);
+        postOrder(tree->left, func, performOnObject);
+        if (performOnObject == 1) {
+            func(tree->Object);
         }
-        freeTree(tree->left, freedObject);
-        free(tree);
+        else {
+            func(tree);
+        }
     }
 }
 void printEmployee(Employee* employee) {
@@ -48,7 +54,7 @@ void printEmployees(EmpDatabase database, int isSortedInSSN) {
     if (top == NULL) {
         return;
     }
-    inOrder(top, (void (*)(void *)) printEmployee);
+    inOrder(top, (void (*)(void *)) printEmployee, 1);
 
 }
 int compareSSN(const void *a, const void *b) {
@@ -78,30 +84,20 @@ EmpDatabase createSearchableEmployeeDB() {
     database.info = info;
     return database;
 }
-BinaryTree * ssnInsert(BinaryTree * tree, Employee * employee) {
+BinaryTree * insert(BinaryTree * tree, void * Object, int compare(const void *, const void *)) {
     if (tree == NULL) {
-        return newTree(employee);
+        return newTree(Object);
     }
-    if (compareSSN(employee, tree->Object) < 0) {
-        tree->left = ssnInsert(tree->left, employee);
+    if (compare(Object, tree->Object) < 0) {
+        tree->left = insert(tree->left, Object, compare);
     }
     else {
-        tree->right = ssnInsert(tree->right, employee);
+        tree->right = insert(tree->right, Object, compare);
     }
     return tree;
 }
-BinaryTree * idInsert(BinaryTree * tree, Employee * employee) {
-    if (tree == NULL) {
-        return newTree(employee);
-    }
-    if (compareID(employee, tree->Object) < 0) {
-        tree->left = idInsert(tree->left, employee);
-    }
-    else {
-        tree->right = idInsert(tree->right, employee);
-    }
-    return tree;
-}
+
+
 Employee * findEmpBySSN(int SSN, EmpDatabase database) {
     return binarySearchEmployee(database.info->ssn_top, SSN, 1);
 }
@@ -117,14 +113,14 @@ EmpDatabase insertEmployee(Employee * employee, EmpDatabase database) {
         info->error = 1;
         return database;
     }
-    info->ssn_top = ssnInsert(info->ssn_top, employee);
-    info->id_top= idInsert(info->id_top, employee);
+    info->ssn_top = insert(info->ssn_top, employee,  compareSSN);
+    info->id_top= insert(info->id_top, employee, compareID);
     info->size++;
     return database;
 }
 void freeEmpDatabase(EmpDatabase database) {
-    freeTree(database.info->ssn_top, 1);
-    freeTree(database.info->id_top, 0);
+    postOrder(database.info->ssn_top, free, 0);
+    postOrder(database.info->id_top, free, 0);
     free(database.info);
 }
 int getSize(EmpDatabase database) {
