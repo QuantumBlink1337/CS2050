@@ -8,6 +8,7 @@ void * binarySearch(BinaryTree * tree, int searchedValue, int func(void * Object
         return NULL;
     }
     void * Object= tree->Object;
+
     value = func(Object);
     if (value == searchedValue) {
         return Object;

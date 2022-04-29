@@ -11,6 +11,7 @@ include_directories(lab4)
 include_directories(lab5)
 include_directories(lab6)
 include_directories(lab7)
+include_directories(lab10)
 include_directories(prelab5)
 include_directories(prelab6)
 include_directories(prelab7)
@@ -22,4 +23,5 @@ include_directories(prelab10)
 
 add_executable(main prelab9/main.c prelab9/prelab9.c)
 add_executable(prelab10_main prelab10/main.c prelab10/prelab10.c)
+add_executable(lab10_main lab10/main.c lab10/lab10.c)
 
