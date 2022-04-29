@@ -13,7 +13,7 @@ int main(void) {
     for (int i = 0; i < size; i++) {
         Employee * employee = malloc(sizeof(Employee));
         employee->SSN = rand() % 10000;
-        employee->ID = rand() % 30;
+        employee->ID = rand() % 100000;
         employeeList[i] = employee;
         insertEmployee(employee, database);
         if (i == size-1) {

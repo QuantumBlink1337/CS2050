@@ -2,20 +2,28 @@
 // Created by thequ on 4/23/2022.
 //
 #include "prelab10.h"
-Employee * binarySearchEmployee(BinaryTree * tree, int searchedValue, int isSSN) {
+void * binarySearch(BinaryTree * tree, int searchedValue, int func(void * Object)) {
     int value;
     if (tree == NULL) {
         return NULL;
     }
-    Employee * midEmployee = (Employee *)tree->Object;
-    value = isSSN == 1 ? midEmployee->SSN : midEmployee->ID;
+    void * Object= tree->Object;
+    value = func(Object);
     if (value == searchedValue) {
-        return midEmployee;
+        return Object;
     }
     if (value > searchedValue) {
-        return binarySearchEmployee(tree->left, searchedValue, isSSN);
+        return binarySearch(tree->left, searchedValue, func);
     }
-    return binarySearchEmployee(tree->right, searchedValue, isSSN);
+    return binarySearch(tree->right, searchedValue, func);
+}
+int SSNunpackage(void * Object) {
+    Employee * employee = Object;
+    return employee->SSN;
+}
+int IDunpackage(void * Object) {
+    Employee * employee = Object;
+    return employee->ID;
 }
 void inOrder(BinaryTree * tree, void func(void *), int performOnObject) {
     if (tree != NULL) {
@@ -99,10 +107,10 @@ BinaryTree * insert(BinaryTree * tree, void * Object, int compare(const void *, 
 
 
 Employee * findEmpBySSN(int SSN, EmpDatabase database) {
-    return binarySearchEmployee(database.info->ssn_top, SSN, 1);
+    return binarySearch(database.info->ssn_top, SSN, SSNunpackage);
 }
 Employee * findEmpByID(int ID, EmpDatabase database) {
-    return binarySearchEmployee(database.info->id_top, ID, 0);
+    return binarySearch(database.info->id_top, ID, IDunpackage);
 }
 EmpDatabase insertEmployee(Employee * employee, EmpDatabase database) {
     EmpInfo * info;
